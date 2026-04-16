@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エージェントに渡す有効情報 — ターゲット解像度の提案 | レオパレス21様 28卒</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-warm:#f6f5f4;
+    --text:rgba(0,0,0,0.95);
+    --text-secondary:#615d59;
+    --text-muted:#a39e98;
+    --border:rgba(0,0,0,0.1);
+    --border-strong:rgba(0,0,0,0.16);
+    --accent:#0075de;
+    --accent-bg:#f2f9ff;
+    --accent-text:#097fe8;
+    --navy:#213183;
+    --warm-dark:#31302e;
+    --teal:#2a9d99;
+    --orange:#dd5b00;
+    --purple:#391c57;
+    --brown:#523410;
+    --shadow-card:rgba(0,0,0,0.04) 0px 4px 18px, rgba(0,0,0,0.027) 0px 2.025px 7.84688px, rgba(0,0,0,0.02) 0px 0.8px 2.925px, rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+    --shadow-deep:rgba(0,0,0,0.01) 0px 1px 3px, rgba(0,0,0,0.02) 0px 3px 7px, rgba(0,0,0,0.02) 0px 7px 15px, rgba(0,0,0,0.04) 0px 14px 28px, rgba(0,0,0,0.05) 0px 23px 52px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: "Inter", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    font-feature-settings: "lnum", "locl";
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .container{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  /* Cover */
+  .cover{
+    min-height: 92vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 96px 32px 80px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cover-kicker{
+    font-size:12px; font-weight:600; letter-spacing:0.14em;
+    color: var(--accent-text);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .cover h1{
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -2.125px;
+    color: var(--text);
+    margin-bottom: 28px;
+    max-width: 880px;
+  }
+  .cover .lead{
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 780px;
+    letter-spacing: -0.125px;
+    margin-bottom: 48px;
+  }
+  .cover .meta{
+    display:flex; gap:24px; flex-wrap:wrap;
+    font-size:14px; color: var(--text-muted); font-weight:500;
+  }
+  .cover .meta span{display:inline-flex; align-items:center; gap:8px;}
+  .cover .meta span::before{content:""; width:6px; height:6px; background: var(--text-muted); border-radius:50%;}
+  /* Section */
+  section{padding: 96px 0;}
+  section.warm{background: var(--bg-warm);}
+  .section-label{
+    font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+    color: var(--accent-text);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display:inline-flex; align-items:center; gap:12px;
+  }
+  .section-label .num{
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.125px;
+  }
+  h2{
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+    max-width: 820px;
+  }
+  .section-lead{
+    font-size: 18px; font-weight: 400; line-height: 1.65;
+    color: var(--text-secondary); max-width: 820px;
+    margin-bottom: 56px;
+  }
+  h3{
+    font-size: 26px; font-weight: 700; line-height: 1.27;
+    letter-spacing: -0.625px;
+    margin-bottom: 16px;
+  }
+  h4{
+    font-size: 22px; font-weight: 700; line-height: 1.3;
+    letter-spacing: -0.25px;
+    margin-bottom: 12px;
+  }
+  p{margin-bottom: 16px; font-size: 16px;}
+  p.large{font-size: 18px; line-height: 1.65;}
+  strong{font-weight: 700; color: var(--text);}
+  em{font-style: normal; background: #fff3d6; padding: 1px 4px; border-radius: 3px;}
+  /* Cards */
+  .cards{display:grid; gap:24px;}
+  .cards.cols-2{grid-template-columns: repeat(2, 1fr);}
+  .cards.cols-3{grid-template-columns: repeat(3, 1fr);}
+  @media (max-width: 900px){.cards.cols-2, .cards.cols-3{grid-template-columns: 1fr;}}
+  .card{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    box-shadow: var(--shadow-card);
+  }
+  .card.flat{box-shadow: none;}
+  .card.navy{background: var(--warm-dark); color:#fff; border-color: transparent;}
+  .card.navy h4, .card.navy p, .card.navy .card-kicker{color:#fff;}
+  .card.navy .card-kicker{color:#a39e98;}
+  .card-kicker{
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .stat{
+    font-size: 48px; font-weight: 700; line-height: 1.0;
+    letter-spacing: -1.5px;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .stat-small{ font-size: 32px;}
+  .stat-unit{
+    font-size: 14px; font-weight: 500; color: var(--text-muted);
+    margin-left: 8px; letter-spacing: normal;
+  }
+  .card-body{
+    font-size: 15px; line-height: 1.6; color: var(--text-secondary);
+  }
+  /* Badge */
+  .badge{
+    display:inline-block;
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.125px;
+    margin-right: 6px;
+  }
+  .badge.teal{background: #e9f6f5; color: var(--teal);}
+  .badge.orange{background: #fcefe4; color: var(--orange);}
+  .badge.purple{background: #ece6f2; color: var(--purple);}
+  .badge.brown{background: #efe7de; color: var(--brown);}
+  .badge.gray{background:#efeeec; color: var(--warm-dark);}
+  /* Visibility diagram: 紙面 vs 面談 */
+  .visibility{
+    display:grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin: 40px 0 16px;
+    align-items: stretch;
+  }
+  @media (max-width: 900px){.visibility{grid-template-columns: 1fr; gap:16px;}}
+  .visibility .col{
+    background:#fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    box-shadow: var(--shadow-card);
+  }
+  .visibility .col.paper{border-top: 4px solid var(--text-muted);}
+  .visibility .col.meet{border-top: 4px solid var(--accent);}
+  .visibility .col-kicker{
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .visibility .col-title{
+    font-size: 22px; font-weight: 700; letter-spacing: -0.25px; margin-bottom: 8px;
+  }
+  .visibility .col-sub{
+    font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;
+  }
+  .visibility ul{list-style:none; padding:0; margin:0;}
+  .visibility ul li{
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+    display:flex; align-items:flex-start; gap:10px;
+  }
+  .visibility ul li:last-child{border-bottom: none;}
+  .visibility ul li::before{
+    content:""; flex-shrink:0;
+    width: 6px; height: 6px; margin-top:7px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+  .visibility .col.meet ul li::before{background: var(--accent);}
+  .visibility .arrow{
+    display:flex; align-items:center; justify-content:center;
+    font-size: 24px; color: var(--text-muted); font-weight: 700;
+  }
+  @media (max-width: 900px){.visibility .arrow{display:none;}}
+
+  /* Ratio bar: 紙面 vs 面談 percentage */
+  .ratio-wrap{margin-top: 20px;}
+  .ratio-label{
+    display:flex; justify-content:space-between;
+    font-size: 12px; color: var(--text-muted); font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .ratio-label span:last-child{color: var(--accent-text);}
+  .ratio-bar{
+    display:flex;
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .ratio-bar .paper{background: #d9d7d3;}
+  .ratio-bar .meet{background: var(--accent);}
+  .ratio-nums{
+    display:flex; justify-content:space-between;
+    font-size: 13px; font-weight: 700;
+    margin-top: 8px;
+  }
+  .ratio-nums span:first-child{color: var(--warm-dark);}
+  .ratio-nums span:last-child{color: var(--accent-text);}
+
+  /* Matrix table */
+  .matrix{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 32px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .matrix th, .matrix td{
+    padding: 20px 22px;
+    text-align: left;
+    font-size: 15px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+  .matrix th{
+    background: var(--bg-warm);
+    font-weight: 700;
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .matrix td + td, .matrix th + th{border-left: 1px solid var(--border);}
+  .matrix tr:last-child td{border-bottom: none;}
+  .matrix .row-head{font-weight: 700;}
+  /* Label list (7 labels, 10 hypotheses) */
+  .label-list{
+    display:grid; gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 40px;
+  }
+  @media (max-width: 900px){.label-list{grid-template-columns: 1fr;}}
+  .label-item{
+    display:flex; gap:20px;
+    padding: 24px 28px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .label-num{
+    flex-shrink:0;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    font-size: 16px; font-weight: 700;
+    display:flex; align-items:center; justify-content:center;
+    letter-spacing: normal;
+  }
+  .label-item.warm .label-num{background: #efeeec; color: var(--warm-dark);}
+  .label-title{font-size: 17px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.15px;}
+  .label-body{font-size: 14px; color: var(--text-secondary); line-height: 1.6;}
+  .label-example{
+    margin-top: 10px; font-size: 13px; color: var(--text-muted);
+    padding-left: 12px; border-left: 2px solid var(--border-strong);
+  }
+  /* Callout */
+  .callout{
+    background: var(--bg-warm);
+    border-left: 3px solid var(--accent);
+    padding: 24px 28px;
+    border-radius: 4px;
+    margin: 32px 0;
+    font-size: 16px;
+  }
+  .callout strong{color: var(--navy);}
+  .callout.dark{
+    background: var(--warm-dark); color:#fff;
+    border-left-color: #fff;
+  }
+  .callout.dark strong{color:#fff;}
+  /* Quote */
+  blockquote{
+    border-left: 3px solid var(--border-strong);
+    padding: 4px 0 4px 20px;
+    margin: 20px 0;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  blockquote cite{
+    display:block; margin-top:8px;
+    font-size: 12px; color: var(--text-muted);
+    font-style: normal;
+  }
+  /* Divider */
+  .divider{height: 1px; background: var(--border); margin: 56px 0;}
+  /* Footer */
+  footer{
+    padding: 64px 0;
+    background: var(--warm-dark);
+    color: #a39e98;
+  }
+  footer h3{color:#fff;}
+  footer a{color: #62aef0; text-decoration: none;}
+  footer .foot-meta{font-size:13px; margin-top: 32px;}
+  /* TOC */
+  .toc{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 40px 0 0;
+    box-shadow: var(--shadow-card);
+  }
+  .toc-title{font-size: 12px; font-weight:600; color: var(--text-muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px;}
+  .toc ol{list-style: none; counter-reset: toc;}
+  .toc ol li{
+    counter-increment: toc;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    display:flex; align-items:baseline; gap:16px;
+  }
+  .toc ol li:last-child{border-bottom: none;}
+  .toc ol li::before{
+    content: counter(toc, decimal-leading-zero);
+    color: var(--text-muted); font-weight: 600;
+    font-size: 13px;
+  }
+  .toc a{color: var(--text); text-decoration: none; font-weight: 500;}
+  .toc a:hover{color: var(--accent);}
+  /* Utility */
+  .sub{color: var(--text-muted); font-size: 14px;}
+  .mt-0{margin-top: 0;}
+  .mt-16{margin-top: 16px;}
+  .mt-32{margin-top: 32px;}
+  .mt-48{margin-top: 48px;}
+  .flex-inline{display:inline-flex; gap:8px; align-items:center;}
+  hr{border: none; border-top: 1px solid var(--border); margin: 24px 0;}
+  .grid-2{display:grid; grid-template-columns: 1fr 1fr; gap:40px;}
+  @media (max-width: 900px){.grid-2{grid-template-columns:1fr;}}
+
+  /* print optimisation */
+  @media print{
+    section{padding: 48px 0; page-break-inside: avoid;}
+    .cover{min-height: auto;}
+    .card{box-shadow: none; border: 1px solid #ddd;}
+  }
+
+  /* ============================
+     MOTION — fade-up, counter, fills
+     ============================ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes drawLine {
+    from { stroke-dashoffset: var(--dash, 1000); }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes wave {
+    0%,100% { transform: translateX(0); }
+    50%     { transform: translateX(-12px); }
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 0.5; transform: scale(1); }
+    50%     { opacity: 1; transform: scale(1.06); }
+  }
+  @keyframes fillBar {
+    from { width: 0%; }
+  }
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .reveal{
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2,.8,.2,1);
+    will-change: opacity, transform;
+  }
+  .reveal.in-view{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal.delay-1{transition-delay: .08s;}
+  .reveal.delay-2{transition-delay: .16s;}
+  .reveal.delay-3{transition-delay: .24s;}
+  .reveal.delay-4{transition-delay: .32s;}
+
+  /* Hover lift */
+  .card{ transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .card:hover{ transform: translateY(-3px); box-shadow: var(--shadow-deep); }
+  .label-item{ transition: transform 0.25s ease, border-color 0.25s ease; }
+  .label-item:hover{ transform: translateX(4px); border-color: var(--accent); }
+
+  /* ============================
+     COVER gradient + orbital motion
+     ============================ */
+  .cover{
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fefefe 0%, #fff 70%, var(--bg-warm) 100%);
+  }
+  .cover::before{
+    content:"";
+    position:absolute;
+    top: -120px; right: -120px;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(0,117,222,0.08), transparent 70%);
+    animation: float 6s ease-in-out infinite;
+    z-index: 0;
+  }
+  .cover::after{
+    content:"";
+    position:absolute;
+    bottom: 40px; left: -100px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(42,157,153,0.08), transparent 70%);
+    animation: float 7s ease-in-out -3s infinite;
+    z-index: 0;
+  }
+  .cover > .container{ position: relative; z-index: 1; }
+
+  /* ============================
+     Animated equation
+     ============================ */
+  .equation{
+    display:flex; align-items:stretch; justify-content:center;
+    gap: 24px;
+    margin: 32px 0 8px;
+    flex-wrap: wrap;
+  }
+  .eq-block{
+    flex: 1; min-width: 200px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 24px 22px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+  .eq-block.accent{border-color: var(--accent); background: var(--accent-bg);}
+  .eq-block .eq-title{
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -0.6px;
+    margin-bottom: 8px;
+  }
+  .eq-block.accent .eq-title{ color: var(--accent-text); }
+  .eq-block .eq-formula{
+    font-size: 13px; color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .eq-op{
+    display:flex; align-items:center; justify-content:center;
+    font-size: 36px; font-weight: 300; color: var(--text-muted);
+    min-width: 24px;
+  }
+
+  /* ============================
+     ICEBERG — 紙面 vs 面談 metaphor
+     ============================ */
+  .iceberg-wrap{
+    position: relative;
+    margin: 48px auto 24px;
+    max-width: 880px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #f7fbff 0%, #f7fbff 40%, #dfeef7 40%, #a7cce0 100%);
+    box-shadow: var(--shadow-card);
+  }
+  .iceberg-wrap svg{ display:block; width: 100%; height: auto; }
+  .iceberg-water{
+    position: absolute;
+    left:0; right:0;
+    top: 40%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: wave 3s ease-in-out infinite;
+  }
+  .iceberg-label-top, .iceberg-label-bottom{
+    position: absolute;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(6px);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: var(--shadow-card);
+  }
+  .iceberg-label-top{
+    top: 8%; left: 8%;
+    color: var(--warm-dark);
+    border: 1px solid var(--border);
+  }
+  .iceberg-label-top strong{color: var(--navy); display:block; font-size:11px; letter-spacing:0.14em; margin-bottom:4px; text-transform:uppercase;}
+  .iceberg-label-bottom{
+    bottom: 8%; right: 8%;
+    color: #fff;
+    background: var(--warm-dark);
+    border: 1px solid var(--warm-dark);
+  }
+  .iceberg-label-bottom strong{color: #62aef0; display:block; font-size:11px; letter-spacing:0.14em; margin-bottom:4px; text-transform:uppercase;}
+  .iceberg-ratio{
+    display:flex; justify-content: space-around;
+    margin-top: 24px;
+    padding: 0 16px;
+  }
+  .iceberg-ratio > div{ text-align: center; }
+  .iceberg-ratio .big{ font-size: 40px; font-weight: 700; letter-spacing: -1px;}
+  .iceberg-ratio .big.paper{color: #615d59;}
+  .iceberg-ratio .big.meet{color: var(--accent-text);}
+  .iceberg-ratio .label{ font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.08em;}
+
+  /* ============================
+     QUADRANT map — 2軸マップ
+     ============================ */
+  .quadrant{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.35 / 1;
+    max-width: 880px;
+    margin: 40px auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+  }
+  .quadrant .axis{
+    position: absolute;
+    background: var(--border-strong);
+  }
+  .quadrant .axis.horizontal{ left: 10%; right: 10%; top: 50%; height: 1px; }
+  .quadrant .axis.vertical{ top: 10%; bottom: 10%; left: 50%; width: 1px; }
+  .quadrant .axis-label{
+    position: absolute;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .quadrant .x-pos{ right: 10px; top: calc(50% - 12px); }
+  .quadrant .x-neg{ left: 10px; top: calc(50% + 6px); }
+  .quadrant .y-pos{ left: calc(50% + 8px); top: 6px; }
+  .quadrant .y-neg{ right: calc(50% + 8px); bottom: 6px; text-align: right;}
+  .quadrant .quad-label{
+    position: absolute;
+    font-size: 12px; font-weight: 600; color: var(--text-muted);
+    opacity: 0.75;
+    letter-spacing: -0.1px;
+  }
+  .quadrant .ql-1{top: 16%; right: 14%; text-align: right;}
+  .quadrant .ql-2{top: 16%; left: 14%;}
+  .quadrant .ql-3{bottom: 16%; left: 14%;}
+  .quadrant .ql-4{bottom: 16%; right: 14%; text-align: right;}
+  .quadrant .dot{
+    position: absolute;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(0,117,222,0.15);
+    transform: translate(-50%, -50%);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .quadrant .dot.teal{ background: var(--teal); box-shadow: 0 0 0 4px rgba(42,157,153,0.15);}
+  .quadrant .dot.purple{ background: var(--purple); box-shadow: 0 0 0 4px rgba(57,28,87,0.15);}
+  .quadrant .dot.orange{ background: var(--orange); box-shadow: 0 0 0 4px rgba(221,91,0,0.15);}
+  .quadrant .dot-label{
+    position: absolute;
+    font-size: 13px; font-weight: 700;
+    transform: translate(-50%, -50%);
+    padding: 4px 10px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: var(--shadow-card);
+  }
+  .quadrant-target{
+    position: absolute;
+    top: 10%; right: 10%; width: 40%; height: 40%;
+    background: linear-gradient(135deg, rgba(42,157,153,0.12), rgba(42,157,153,0.02));
+    border-radius: 0 16px 0 0;
+    pointer-events: none;
+  }
+
+  /* ============================
+     FUNNEL diagram
+     ============================ */
+  .funnel{
+    max-width: 920px; margin: 48px auto;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px;
+  }
+  .funnel-stage{
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 28px;
+    box-shadow: var(--shadow-card);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px;
+    transition: transform 0.3s ease;
+  }
+  .funnel-stage:hover{ transform: scale(1.02); }
+  .funnel-stage.s1{ width: 100%; background: var(--bg-warm); }
+  .funnel-stage.s2{ width: 82%; border-color: rgba(161,158,152,0.5); }
+  .funnel-stage.s3{ width: 64%; border-color: var(--border-strong); }
+  .funnel-stage.s4{ width: 48%; border-color: var(--accent); background: var(--accent-bg); }
+  .funnel-stage.s5{ width: 32%; background: var(--warm-dark); color: #fff; border-color: transparent; }
+  .funnel-stage.s5 .funnel-label, .funnel-stage.s5 .funnel-num{ color: #fff; }
+  .funnel-stage.s5 .funnel-sub{ color: #a39e98; }
+  .funnel-label{
+    font-size: 15px; font-weight: 700;
+    letter-spacing: -0.1px;
+  }
+  .funnel-sub{
+    font-size: 12px; color: var(--text-muted); font-weight: 500;
+    margin-top: 2px;
+  }
+  .funnel-num{
+    font-size: 20px; font-weight: 700;
+    letter-spacing: -0.4px;
+    color: var(--text);
+  }
+  .funnel-arrow{
+    font-size: 18px; color: var(--text-muted);
+    transform: rotate(90deg);
+    animation: float 2.4s ease-in-out infinite;
+  }
+
+  /* ============================
+     10 elements — category wheel
+     ============================ */
+  .wheel{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+  }
+  @media (max-width: 900px){ .wheel{ grid-template-columns: repeat(2, 1fr); } }
+  .wheel-cat{
+    padding: 22px 22px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #fff;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+  }
+  .wheel-cat::before{
+    content:"";
+    position:absolute; top:0; left:0;
+    width: 100%; height: 4px;
+  }
+  .wheel-cat.kuse::before{ background: var(--accent); }
+  .wheel-cat.kodawari::before{ background: var(--brown); }
+  .wheel-cat.koudou::before{ background: var(--teal); }
+  .wheel-cat.jitsuryoku::before{ background: var(--purple); }
+  .wheel-cat h5{
+    font-size: 14px; font-weight: 700; letter-spacing: -0.1px;
+    margin-bottom: 6px;
+  }
+  .wheel-cat .wc-kicker{
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--text-muted); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .wheel-cat ul{ list-style: none; padding: 0; margin: 0; }
+  .wheel-cat ul li{
+    font-size: 13px; line-height: 1.55;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 8px;
+    color: var(--text);
+  }
+  .wheel-cat ul li:last-child{ border-bottom: none; }
+  .wheel-cat ul li .wn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--bg-warm);
+    color: var(--text);
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .wheel-cat.kuse ul li .wn{ background: var(--accent-bg); color: var(--accent-text);}
+  .wheel-cat.kodawari ul li .wn{ background: #efe7de; color: var(--brown);}
+  .wheel-cat.koudou ul li .wn{ background: #e9f6f5; color: var(--teal);}
+  .wheel-cat.jitsuryoku ul li .wn{ background: #ece6f2; color: var(--purple);}
+
+  /* ============================
+     Counter number
+     ============================ */
+  .counter{ font-variant-numeric: tabular-nums; }
+
+  /* Scroll progress */
+  .scroll-progress{
+    position: fixed; top:0; left:0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--teal));
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.1s linear;
+  }
+
+  /* Timeline for next actions */
+  .timeline{
+    position: relative;
+    padding-left: 32px;
+    margin-top: 32px;
+  }
+  .timeline::before{
+    content:"";
+    position: absolute;
+    left: 10px; top: 10px; bottom: 10px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--teal));
+  }
+  .timeline-item{
+    position: relative;
+    padding: 18px 0 18px 24px;
+  }
+  .timeline-item::before{
+    content:"";
+    position: absolute;
+    left: -28px; top: 24px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 0 4px rgba(0,117,222,0.1);
+  }
+  .timeline-item h4{ font-size: 17px; margin-bottom: 4px; letter-spacing: -0.2px;}
+  .timeline-item .t-meta{
+    font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .timeline-item .t-body{ font-size: 14px; color: var(--text-secondary); line-height: 1.65;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .cover::before, .cover::after,
+    .iceberg-water, .quadrant .dot, .funnel-arrow,
+    .label-item{ animation: none !important; transition: none !important; transform: none !important; opacity: 1 !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- COVER -->
+<header class="cover">
+  <div class="container" style="padding:0;">
+    <div class="cover-kicker">Leopalace21 × Kakehashi Sky — 28卒エージェントコントロール</div>
+    <h1>エージェントに渡す<br>「有効な情報」の再定義。</h1>
+    <p class="lead">採用市場とエージェントのリアルを踏まえ、紙面では見えないターゲット像を「7つのラベル」と「10の仮説」に構造化する。</p>
+    <div class="meta">
+      <span>2026.04.16</span>
+      <span>株式会社カケハシスカイ / 林 圭祐</span>
+      <span>For 株式会社レオパレス21 様</span>
+    </div>
+
+    <div class="toc">
+      <div class="toc-title">本資料の流れ</div>
+      <ol>
+        <li><a href="#summary">本資料のねらい</a></li>
+        <li><a href="#market">採用市場の前提 ― 公開情報で読む現在地</a></li>
+        <li><a href="#agent">エージェントのリアル ― 構造から読む攻略軸</a></li>
+        <li><a href="#resolution">ターゲット解像度の構造 ― 紙面で見えること／見えないこと</a></li>
+        <li><a href="#actual">レオパレス21様の実際のターゲット</a></li>
+        <li><a href="#labels">紙面で発見する「7つのラベル」（確率論）</a></li>
+        <li><a href="#hypotheses">会って滲み出る「10の要素」（合否）</a></li>
+        <li><a href="#action">次のアクション</a></li>
+      </ol>
+    </div>
+  </div>
+</header>
+
+<!-- SUMMARY -->
+<section id="summary">
+  <div class="container">
+    <div class="section-label"><span class="num">00</span>EXECUTIVE SUMMARY</div>
+    <h2>本資料のねらい</h2>
+    <p class="section-lead">エージェント経由の採用は、"母集団を増やすか会う工数を絞るか"の議論になりがちだ。しかし本質は <strong>有効な情報をCAに渡せているか</strong> にある。紙面で評価できる事実（学歴・実績）と、面談でしか引き出せない本質（こだわり・思考）を切り分け、レオパレス21様の次世代リーダー層採用における勝ち筋を提案する。</p>
+
+    <div class="equation reveal">
+      <div class="eq-block">
+        <div class="eq-title counter" data-target="採用成果">採用成果</div>
+        <div class="eq-formula">Outcome</div>
+      </div>
+      <div class="eq-op">=</div>
+      <div class="eq-block accent">
+        <div class="eq-title">有効率</div>
+        <div class="eq-formula">ターゲット解像度 × 伝達フォロー</div>
+      </div>
+      <div class="eq-op">×</div>
+      <div class="eq-block">
+        <div class="eq-title">母集団</div>
+        <div class="eq-formula">学生満足度 × CA評価</div>
+      </div>
+    </div>
+    <p class="sub reveal" style="text-align:center; margin-top:12px;">有効率が立たないまま母集団だけ増やすと、工数が合わない。<br>本資料の結論は「<strong style="color:var(--accent)">有効な情報の定義</strong>」を先にやる。</p>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section id="market" class="warm">
+  <div class="container">
+    <div class="section-label"><span class="num">01</span>採用市場の前提</div>
+    <h2>公開情報で読む、<br>いまの新卒採用の現在地。</h2>
+    <p class="section-lead">2027卒は「高倍率＋早期化＋情報氾濫」のトリプル圧。企業単体の魅力では決まらず、学生の意思決定プロセスに入り込める経路が勝負を分ける。</p>
+
+    <div class="cards cols-3">
+      <div class="card reveal">
+        <div class="card-kicker">大卒求人倍率 (2026卒)</div>
+        <div class="stat"><span class="counter" data-target="1.66" data-decimals="2">0</span><span class="stat-unit">倍</span></div>
+        <p class="card-body">前年1.75倍から低下も、<strong>300人未満企業は8.98倍</strong>とコロナ前ピーク並み。中堅規模は二極化の谷に入る。</p>
+      </div>
+      <div class="card reveal delay-1">
+        <div class="card-kicker">新卒エージェント利用率</div>
+        <div class="stat"><span class="counter" data-target="66">0</span><span class="stat-unit">%</span></div>
+        <p class="card-body">2023卒の就活生で利用経験あり。<strong>2018卒では約4%</strong>。わずか5年で16倍。"就活できない学生が使う"というレッテルは消滅。</p>
+      </div>
+      <div class="card reveal delay-2">
+        <div class="card-kicker">新卒採用平均単価</div>
+        <div class="stat"><span class="counter" data-target="120">0</span><span class="stat-unit">万円</span></div>
+        <p class="card-body">手法別では紹介（85-100万／年収の20-25%）が突出。<strong>ハイクラス紹介は前年比+12%</strong>で最も成長率が高い領域。</p>
+      </div>
+    </div>
+
+    <div class="grid-2 mt-48">
+      <div>
+        <h3>3つの構造変化</h3>
+        <p><strong>① オンライン化で母集団は膨張、優秀層は取り合い。</strong>学生エントリー数は倍々で増えるが、企業は「量」では差別化できない。結果、給与・ブランドで勝負する企業が勝つ二極構造に。</p>
+        <p><strong>② Z世代は第三者レコメンドに敏感。</strong>コロナ禍で相談相手が減り、エージェント（＝キャリアアドバイザー、以下CA）への依存が急増。SNS/口コミより <em>「自分のことを知っている人」</em> の推薦が意思決定を動かす。</p>
+        <p><strong>③ 早期化が常態化。</strong>3年生4月時点で就活開始が最多層。情報収集は動画・X・エージェント経由が中心で、紙の説明会資料は届きにくい。</p>
+      </div>
+      <div>
+        <h3>中堅規模企業の詰まり</h3>
+        <p>大手（5,000人以上）は倍率横ばいで安定、300人未満は狭く深い人手不足、300–4,999人規模は <strong>「有効求人倍率は下がるのに採りきれない」</strong> という独自の谷にいる。</p>
+        <p>レオパレス21様もこのゾーンに入る。ブランド・単価で押し切るのではなく、<strong>"誰に"届けるかの解像度</strong> で有効率を上げる戦略が不可避。</p>
+        <blockquote>
+          "中小企業を希望する学生は前年比3割減。学生は知名度のある大手志向に回帰している。"
+          <cite>日本経済新聞 / リクルートワークス研究所 2026卒調査</cite>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT -->
+<section id="agent">
+  <div class="container">
+    <div class="section-label"><span class="num">02</span>エージェントのリアル</div>
+    <h2>CAの稼働メカニズムから<br>攻略軸を逆算する。</h2>
+    <p class="section-lead">エージェントは「学生を紹介する会社」ではなく <strong>「限られた稼働時間で、どこに学生を送ると自分の成果が最大化するか」を毎日選んでいる組織</strong>。この視点に立つと攻略の勘所が変わる。</p>
+
+    <div class="cards cols-3">
+      <div class="card reveal">
+        <div class="card-kicker">平均紹介単価</div>
+        <div class="stat stat-small"><span class="counter" data-target="120">0</span><span class="stat-unit">万円</span></div>
+        <p class="card-body">10年前の60-80万から倍近く上昇。外資コンサル系は<strong>250万円</strong>に達する。CAは高単価案件を優先紹介する構造インセンティブを持つ。</p>
+      </div>
+      <div class="card reveal delay-1">
+        <div class="card-kicker">新卒紹介市場CAGR</div>
+        <div class="stat stat-small">+<span class="counter" data-target="4.5" data-decimals="1">0</span><span class="stat-unit">%</span></div>
+        <p class="card-body">2021-2025年度。2024年度の紹介業全体手数料収入は<strong>8,362億円（+8.6%）</strong>。需要側の採用意欲×単価上昇で成長が加速中。</p>
+      </div>
+      <div class="card reveal delay-2">
+        <div class="card-kicker">CA1人あたり担当</div>
+        <div class="stat stat-small">30–<span class="counter" data-target="50">0</span><span class="stat-unit">名</span></div>
+        <p class="card-body">CAは日常的に学生と対話し、<strong>細かい経験・役割・行動粒度でターゲット像を持っている</strong>。企業の「優秀な人」という粗い依頼とのギャップがミスマッチの主因。</p>
+      </div>
+    </div>
+
+    <h3 class="mt-48">CAに刺さらない3つの典型</h3>
+    <div class="cards cols-2">
+      <div class="card flat" style="background: var(--bg-warm); border: 1px solid var(--border);">
+        <span class="badge orange">典型①</span>
+        <h4 class="mt-16">"優秀な学生を"という依頼</h4>
+        <p class="card-body">CAは1,000人の学生を日常で担当する。"優秀"の粒度が企業側と違う。抽象語では学生の名前が1人も浮かばない。→ <strong>送れない</strong>。</p>
+      </div>
+      <div class="card flat" style="background: var(--bg-warm); border: 1px solid var(--border);">
+        <span class="badge orange">典型②</span>
+        <h4 class="mt-16">事実評価の羅列（学歴・実績・待遇）</h4>
+        <p class="card-body">他社も同じ粒度で出している。<strong>紙面で済む情報</strong>はCAの記憶に残らない。差別化ゼロ。</p>
+      </div>
+      <div class="card flat" style="background: var(--bg-warm); border: 1px solid var(--border);">
+        <span class="badge orange">典型③</span>
+        <h4 class="mt-16">面談の中身が"会社紹介"</h4>
+        <p class="card-body">学生が面談後にCAに「何が腑に落ちた？」と聞かれた時、<strong>抽象語しか返せない設計</strong>では次月以降の送客が止まる。</p>
+      </div>
+      <div class="card flat" style="background: var(--bg-warm); border: 1px solid var(--border);">
+        <span class="badge teal">勝ち筋</span>
+        <h4 class="mt-16">CAがファン化する情報設計</h4>
+        <p class="card-body">「あそこに送ると学生が成長して帰ってくる」とCAの間で評判になる企業は、<strong>月200人規模の送客</strong>を安定させている。</p>
+      </div>
+    </div>
+
+    <div class="callout dark mt-48">
+      攻略の核心は「大量に会う」ではなく「<strong>CAが"ここに送れば決まる"とイメージできる情報を渡せているか</strong>」。<br>
+      情報設計が先、母集団は後からついてくる。
+    </div>
+  </div>
+</section>
+
+<!-- RESOLUTION -->
+<section id="resolution" class="warm">
+  <div class="container">
+    <div class="section-label"><span class="num">03</span>ターゲット解像度の構造</div>
+    <h2>紙面で見えること、<br>紙面では見えないこと。</h2>
+    <p class="section-lead">CAに渡すべき情報は「事実」ではなく、事実の裏にある <strong>選択のこだわりと、張り巡らされた思考</strong>。まず、紙面で見えるもの／会って初めて見えるものを切り分ける。</p>
+
+    <!-- ICEBERG METAPHOR -->
+    <div class="iceberg-wrap reveal" aria-label="紙面と面談のアイスバーグ図">
+      <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#fafdff"/>
+            <stop offset="100%" stop-color="#e9f4fb"/>
+          </linearGradient>
+          <linearGradient id="waterGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#c9e3ef"/>
+            <stop offset="50%" stop-color="#7ba9c3"/>
+            <stop offset="100%" stop-color="#3d6a85"/>
+          </linearGradient>
+          <linearGradient id="icebergTop" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e4edf2"/>
+          </linearGradient>
+          <linearGradient id="icebergBottom" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#b7d0dc" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#6592a8" stop-opacity="0.85"/>
+          </linearGradient>
+        </defs>
+        <!-- Sky -->
+        <rect x="0" y="0" width="800" height="200" fill="url(#skyGrad)"/>
+        <!-- Water -->
+        <rect x="0" y="200" width="800" height="300" fill="url(#waterGrad)"/>
+        <!-- Water shimmer lines -->
+        <g opacity="0.35" stroke="#ffffff" stroke-width="1" fill="none">
+          <path d="M0 215 Q 100 210, 200 215 T 400 215 T 600 215 T 800 215">
+            <animate attributeName="d" dur="6s" repeatCount="indefinite"
+              values="M0 215 Q 100 210, 200 215 T 400 215 T 600 215 T 800 215;
+                      M0 215 Q 100 220, 200 215 T 400 215 T 600 215 T 800 215;
+                      M0 215 Q 100 210, 200 215 T 400 215 T 600 215 T 800 215"/>
+          </path>
+          <path d="M0 235 Q 120 230, 240 235 T 480 235 T 720 235">
+            <animate attributeName="d" dur="7s" repeatCount="indefinite"
+              values="M0 235 Q 120 230, 240 235 T 480 235 T 720 235;
+                      M0 235 Q 120 240, 240 235 T 480 235 T 720 235;
+                      M0 235 Q 120 230, 240 235 T 480 235 T 720 235"/>
+          </path>
+        </g>
+        <!-- Iceberg above water -->
+        <polygon points="360,60 470,200 250,200" fill="url(#icebergTop)" stroke="#c6d4dd" stroke-width="1.5"/>
+        <polygon points="360,60 410,140 380,200 340,200 320,150" fill="#ffffff" opacity="0.6"/>
+        <!-- Iceberg below water -->
+        <polygon points="250,200 470,200 560,340 420,460 260,450 160,320" fill="url(#icebergBottom)" stroke="#5785a0" stroke-width="1.5" opacity="0.9"/>
+        <polygon points="310,220 450,220 500,310 400,400 300,380 230,290" fill="#ffffff" opacity="0.18"/>
+        <!-- Water surface line -->
+        <line x1="0" y1="200" x2="800" y2="200" stroke="#ffffff" stroke-width="2" opacity="0.7"/>
+
+        <!-- Labels inside SVG -->
+        <g font-family="Inter, sans-serif">
+          <!-- Top percentage -->
+          <text x="540" y="130" font-size="22" font-weight="700" fill="#31302e" letter-spacing="-0.5">30%</text>
+          <text x="540" y="150" font-size="11" font-weight="600" fill="#615d59" letter-spacing="0.1em">PAPER</text>
+          <!-- Bottom percentage -->
+          <text x="600" y="380" font-size="28" font-weight="700" fill="#ffffff" letter-spacing="-0.8">70%</text>
+          <text x="600" y="400" font-size="11" font-weight="600" fill="#d4e4ee" letter-spacing="0.1em">MEET</text>
+        </g>
+      </svg>
+
+      <div class="iceberg-label-top">
+        <strong>紙面で見える</strong>
+        事実 ＋ 選択の輪郭
+      </div>
+      <div class="iceberg-label-bottom">
+        <strong>面談で見える</strong>
+        思考の癖・こだわり・滲み出た実力
+      </div>
+    </div>
+
+    <p class="sub reveal" style="text-align:center; margin-bottom:48px;">学生の"優秀性"は氷山のように、可視部分より水面下の方が大きい。紙面は入口、面談が本体。</p>
+
+    <div class="visibility">
+      <div class="col paper">
+        <div class="col-kicker">PAPER ー 紙面で見えること</div>
+        <div class="col-title">事実と選択の輪郭</div>
+        <div class="col-sub">ES・職務経歴書・適性検査・推薦状で確認できる範囲。<strong>"確率論"で引っ掛けるフィルター</strong>として扱う。</div>
+        <ul>
+          <li>学歴・学部・専攻</li>
+          <li>サークル／部活／役職の有無</li>
+          <li>インターン経験・アルバイト歴</li>
+          <li>資格・検定・受賞歴</li>
+          <li>留学・長期プロジェクトの有無</li>
+          <li>適性検査の数値（ヴァイタリティ等）</li>
+          <li>"なぜその選択をしたか"の要約文</li>
+        </ul>
+      </div>
+      <div class="arrow">→</div>
+      <div class="col meet">
+        <div class="col-kicker">MEET ー 会って初めて見えること</div>
+        <div class="col-title">思考の癖と滲み出た実力</div>
+        <div class="col-sub">対話でしか引き出せない本質。<strong>"優秀"の定義はこちら側にある</strong>。紙面は確率を上げるだけ。</div>
+        <ul>
+          <li>Whyを重ねた時の答えの枯れ方</li>
+          <li>失敗を語る時の構造化の自然さ</li>
+          <li>抽象と具体を往復する癖</li>
+          <li>他者への敬意・功績の所在分解</li>
+          <li>受けた問いを再定義する思考習慣</li>
+          <li>他人が気にしない細部へのこだわり</li>
+          <li>メタ認知 ― 自分を外から語る余裕</li>
+        </ul>
+      </div>
+    </div>
+    <p class="sub" style="text-align:center;">紙面は"確率を上げるフィルター"。合否は"会って初めて見える要素"で決まる。</p>
+
+    <table class="matrix" style="margin-top: 48px;">
+      <thead>
+        <tr>
+          <th style="width:18%;">層</th>
+          <th>学生評価側（CA → 企業）</th>
+          <th>企業説明側（企業 → CA）</th>
+          <th style="width:14%;">見え方</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">① 事実層<br><span class="sub">(Facts)</span></td>
+          <td>学歴、サークル肩書、インターン歴、資格</td>
+          <td>事業内容、規模、待遇、採用スケジュール</td>
+          <td><span class="badge gray">紙面で足りる</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">② 選択層<br><span class="sub">(Choices)</span></td>
+          <td>なぜその進学／留学／活動を選んだか。他選択肢との比較</td>
+          <td>なぜこの事業再生をやっているか。なぜ"社員が主役"を掲げたか</td>
+          <td><span class="badge">ESで読める</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">③ こだわり層<br><span class="sub">(Obsessions)</span></td>
+          <td>何を大事にしているか。失敗をどう構造化したか。現在地をどう語るか</td>
+          <td>社員が何にこだわって現場で動いているか。どの場面で"自分なり"を出しているか</td>
+          <td><span class="badge teal">面談で引き出す</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grid-2 mt-48">
+      <div>
+        <h3>紙面・ESで発見できる層（①②）</h3>
+        <p>ここがこの後提示する <strong>「7つのラベル」</strong>。CAが初回の学生面談やES読み込みの段階で引っ掛けられるシグナル。ここで引っ掛かった学生が、次世代リーダー人材である確率を押し上げる。</p>
+        <p class="sub">※ ラベルは"次世代確定"を意味しない。あくまで確率を上げるフィルタ。</p>
+      </div>
+      <div>
+        <h3>面談で引き出す層（③）</h3>
+        <p>ここがこの後提示する <strong>「10の仮説」</strong>。CAに渡すべき"レオパレス21で刺さる学生像"の言語化。これが揃うとCAは「送れば決まる」イメージを持て、送客の質が劇的に変わる。</p>
+        <p class="sub">※ 仮説は運用しながら検証し、四半期で棚卸す前提。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>なぜ「事実ではなく分解力」なのか。</strong><br>
+      4/15の議論で田代様・林さんが共通して辿り着いた論点 ― 事実の強度はエージェント間で相対化される。同じ学歴・同じ実績の学生は数千人いる。差別化は <em>「事実を分解し、他者に伝える力」</em> にしかない。メタ認知＝現在地を語れる学生こそ、再生期のレオパレス21で活きる。
+    </div>
+  </div>
+</section>
+
+<!-- ACTUAL -->
+<section id="actual">
+  <div class="container">
+    <div class="section-label"><span class="num">04</span>レオパレス21様の実際のターゲット</div>
+    <h2>既存資料と4/15議論で<br>合意してきた輪郭。</h2>
+    <p class="section-lead">過去の提案書・ペルソナ設計資料・4/15のディスカッションを統合し、現時点で握れている次世代リーダー層の輪郭を再提示する。</p>
+
+    <div class="cards cols-2">
+      <div class="card">
+        <div class="card-kicker">志向（指向性）</div>
+        <h4>何を求めてレオパレスに来るか</h4>
+        <ul style="margin-top:12px; padding-left: 20px; color: var(--text-secondary); font-size:15px; line-height: 1.75;">
+          <li>将来は経営に携わり、意思決定側に立ちたい</li>
+          <li>若いうちから難易度の高い環境で早期キャリアアップ</li>
+          <li>「働いた後の自分」を具体的に描ける環境を選びたい</li>
+          <li>役割や前例に縛られず挑戦を取りにいきたい</li>
+          <li>エンドユーザーに近く、価値提供の実感を持ちたい</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-kicker">資質</div>
+        <h4>何を持っている学生か</h4>
+        <ul style="margin-top:12px; padding-left: 20px; color: var(--text-secondary); font-size:15px; line-height: 1.75;">
+          <li>構造化能力 × 行動力</li>
+          <li>利害の違う相手を動かす巻き込み力</li>
+          <li>逆境をチャンスと捉え行動できる</li>
+          <li>高い基準を自ら置き、やり切る実行力</li>
+          <li>組織・チームの成果に責任を持てる当事者意識</li>
+          <li>メタ認知 ― 現在地を語れる言語化力</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="mt-48">2軸マップ ― 認知 × 行動でターゲットを置く</h3>
+    <p>ターゲットを <strong>「認知軸（メタ認知・言語化）× 行動軸（環境越境・当事者意識）」</strong> の2軸でマッピング。右上ゾーンが次世代リーダー確定圏。3名はこのマップ上でどこに立っているか。</p>
+
+    <div class="quadrant reveal">
+      <div class="quadrant-target"></div>
+      <div class="axis horizontal"></div>
+      <div class="axis vertical"></div>
+
+      <!-- Axis labels -->
+      <div class="axis-label x-pos">行動 高 →</div>
+      <div class="axis-label x-neg">← 行動 低</div>
+      <div class="axis-label y-pos">↑ 認知 高</div>
+      <div class="axis-label y-neg">認知 低 ↓</div>
+
+      <!-- Quadrant labels -->
+      <div class="quad-label ql-1"><strong style="color:var(--teal); font-size:13px;">① コア型</strong><br>次世代リーダー確定</div>
+      <div class="quad-label ql-2"><strong style="color:var(--purple); font-size:13px;">② 戦略支援型</strong><br>分析で組織を動かす</div>
+      <div class="quad-label ql-3">④ 基盤人材<br>別フロー</div>
+      <div class="quad-label ql-4"><strong style="color:var(--orange); font-size:13px;">③ 実行ポテンシャル</strong><br>面談で引き出しコア化</div>
+
+      <!-- Dots: 中津 (teal, high cog × high act), 中倉 (purple, high cog × mid act), 大倉 (orange, mid cog × high act) -->
+      <div class="dot teal" style="top: 22%; left: 75%;"></div>
+      <div class="dot-label" style="top: 16%; left: 75%;">中津</div>
+
+      <div class="dot purple" style="top: 28%; left: 35%;"></div>
+      <div class="dot-label" style="top: 22%; left: 35%;">中倉</div>
+
+      <div class="dot orange" style="top: 68%; left: 72%;"></div>
+      <div class="dot-label" style="top: 74%; left: 72%;">大倉</div>
+    </div>
+
+    <p class="sub" style="text-align:center;">緑ゾーン（右上）が次世代リーダー確定圏。3名ともエリア付近に位置し、10要素の観測で最終判定される。</p>
+
+    <h3 class="mt-48">実例 ― 紙面と面談の寄与度</h3>
+    <p>田代様より共有いただいた最終面接官の評価文面を分解すると、3名とも <strong>"会って初めて見えた要素"で優秀と定義された</strong>。紙面は確率を上げたが、決定打は面談にあった。</p>
+
+    <div class="cards cols-3 mt-32">
+      <div class="card">
+        <span class="badge teal">コア型</span>
+        <h4 class="mt-16">中津さん</h4>
+        <p class="card-body"><strong>紙面でわかったこと</strong>：秋田進学／マレーシア留学／家庭教師。</p>
+        <p class="card-body"><strong>面談で滲み出たこと</strong>：留学先で役割を自分で獲得したプロセス、生徒・保護者との対話を重視する価値観、"人の役に立つ"軸と経験の自然な接続。</p>
+        <div class="ratio-wrap">
+          <div class="ratio-label"><span>紙面</span><span>面談</span></div>
+          <div class="ratio-bar">
+            <div class="paper" style="width:40%;"></div>
+            <div class="meet" style="width:60%;"></div>
+          </div>
+          <div class="ratio-nums"><span>40%</span><span>60%</span></div>
+        </div>
+        <p class="sub mt-16">→ 次世代リーダー推薦。</p>
+      </div>
+      <div class="card">
+        <span class="badge purple">戦略支援型</span>
+        <h4 class="mt-16">中倉さん</h4>
+        <p class="card-body"><strong>紙面でわかったこと</strong>：ゼミ所属／地方創生フォーラム参加／インターン未経験・就活開始12月・大学ランク対象外。</p>
+        <p class="card-body"><strong>面談で滲み出たこと</strong>：SWOTを自然に使う思考の型、根拠データで粘り強くやり抜く姿勢、一貫した軸、質問に対する的確・論理的な返答。</p>
+        <div class="ratio-wrap">
+          <div class="ratio-label"><span>紙面</span><span>面談</span></div>
+          <div class="ratio-bar">
+            <div class="paper" style="width:25%;"></div>
+            <div class="meet" style="width:75%;"></div>
+          </div>
+          <div class="ratio-nums"><span>25%</span><span>75%</span></div>
+        </div>
+        <p class="sub mt-16">→ 学歴を入口フィルタに留めれば拾える人材。</p>
+      </div>
+      <div class="card">
+        <span class="badge orange">実行ポテンシャル型</span>
+        <h4 class="mt-16">大倉さん</h4>
+        <p class="card-body"><strong>紙面でわかったこと</strong>：ジャズサークル／簿記2級＋秘書検定2級＋宅建挑戦中／スポンサー獲得活動。</p>
+        <p class="card-body"><strong>面談で滲み出たこと</strong>：面接官名まで調べる事前準備、スポンサーの支援動機を分解する分析力、法学部を巻き込んだ越境、堅実さの裏にある主体的改善姿勢。</p>
+        <div class="ratio-wrap">
+          <div class="ratio-label"><span>紙面</span><span>面談</span></div>
+          <div class="ratio-bar">
+            <div class="paper" style="width:35%;"></div>
+            <div class="meet" style="width:65%;"></div>
+          </div>
+          <div class="ratio-nums"><span>35%</span><span>65%</span></div>
+        </div>
+        <p class="sub mt-16">→ 面談で言語化を引き出せればコア型へ昇格。</p>
+      </div>
+    </div>
+
+    <div class="callout mt-48">
+      <strong>3名に共通する構造：</strong>紙面で引っ掛けられた要素は全体の25–40%に過ぎず、<em>"優秀"と定義された根拠の過半は会ってからの滲み出た実力にあった</em>。つまり、紙面（7つのラベル）は <strong>"会うに値する確率"</strong> を上げるフィルターとして機能し、<strong>合否は面談で見える10の要素</strong> によって決まる。</div>
+
+    <blockquote class="mt-48">
+      "学歴層はひとつの仮説として有効。ただし秀でた能力でフラグ立つ例外は確かにある。重要なのは <strong>与えられた環境を超える行動量、当事者意識の深さ、再現性、周囲への影響力</strong>。"
+      <cite>田代様 ― 2026/04/15 エージェント戦略ディスカッション</cite>
+    </blockquote>
+    <blockquote>
+      "事実の強度は相対化される。差別化は <strong>事実を分解し、他者に伝える力</strong>。目的・ゴールは後付けで嘘をつけるが、現在地の自己理解は対話で嘘がつけない。"
+      <cite>林 ― 同日議事より</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- 7 LABELS -->
+<section id="labels" class="warm">
+  <div class="container">
+    <div class="section-label"><span class="num">05</span>紙面で発見する7つのラベル（確率論）</div>
+    <h2>会うに値する確率を<br>押し上げる、紙面シグナル。</h2>
+    <p class="section-lead">ESや職務経歴・適性検査で引っ掛けられる、<strong>次世代リーダーである"確率"を押し上げる7つのラベル</strong>。これは合否基準ではなく <em>"会うに値するかどうか"</em> の確率論フィルター。3つ以上該当する学生を優先で面談に回し、そこから10の要素で判定する。</p>
+
+    <div class="label-list">
+      <div class="label-item warm">
+        <div class="label-num">1</div>
+        <div>
+          <div class="label-title">選択の偏差</div>
+          <div class="label-body">安定路線を外した進学・留学・サークル選択がある。「なぜそこ？」が一言で説明できない深さを持つ。</div>
+          <div class="label-example">例：地方から都心難関大ではなく、あえて秋田大学を選んだ中津さん</div>
+        </div>
+      </div>
+      <div class="label-item warm">
+        <div class="label-num">2</div>
+        <div>
+          <div class="label-title">役割の獲得</div>
+          <div class="label-body">役職名が "任命されたもの" ではなく "自分で取りにいった" ことが文面から読み取れる。副主将、代表、幹事の <em>獲得プロセス</em> が書かれている。</div>
+          <div class="label-example">例：留学先で協働プロジェクトの役割を自ら獲得した中津さん</div>
+        </div>
+      </div>
+      <div class="label-item warm">
+        <div class="label-num">3</div>
+        <div>
+          <div class="label-title">再設計の痕跡</div>
+          <div class="label-body">既存のルール・仕組み・運用を変えた経験がある。前例踏襲ではなく、自ら仕組みを組み替えている。</div>
+          <div class="label-example">例：支援金 &lt; 交通費の課題を分析し、非対面営業と電子契約を導入した大倉さん</div>
+        </div>
+      </div>
+      <div class="label-item warm">
+        <div class="label-num">4</div>
+        <div>
+          <div class="label-title">越境動線</div>
+          <div class="label-body">地域・組織・文化を越える経験が1つ以上ある。留学、地方進学、業界横断、異分野コラボなど <em>ホームを出た</em> 痕跡。</div>
+          <div class="label-example">例：マレーシア留学、法学部への協力依頼など分野横断行動</div>
+        </div>
+      </div>
+      <div class="label-item warm">
+        <div class="label-num">5</div>
+        <div>
+          <div class="label-title">並行挑戦</div>
+          <div class="label-body">資格・部活・アルバイト・学業など複数軸を同時進行。一点集中ではなく、キャパシティと優先順位設計の力が読み取れる。</div>
+          <div class="label-example">例：簿記2級＋秘書検定2級＋宅建挑戦中＋就活 の大倉さん</div>
+        </div>
+      </div>
+      <div class="label-item warm">
+        <div class="label-num">6</div>
+        <div>
+          <div class="label-title">数字と分解</div>
+          <div class="label-body">成果を数字で語り、その裏に分析がある。KPI、前後比較、Why分解のフレーム（SWOT等）が自然に出る。</div>
+          <div class="label-example">例：SWOTと根拠データで地方創生提案をした中倉さん</div>
+        </div>
+      </div>
+      <div class="label-item warm">
+        <div class="label-num">7</div>
+        <div>
+          <div class="label-title">文脈接続</div>
+          <div class="label-body">自分の体験と志望理由が具体プロセスで接続している。業界選択の一貫性。「なぜ不動産なのか」が自身の原体験から語れる。</div>
+          <div class="label-example">例：家庭教師での対話経験 → "人の役に立つ"軸 → 不動産の中津さん</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout mt-48">
+      <strong>運用ルール：</strong>7ラベル中 <em>3つ以上</em> を具体エピソード付きで満たす学生を <strong>優先的に"会う"判断</strong> に回す。1-2個は基盤人材フローへ、0個は対象外。<strong>学歴ランクはラベル判定に影響させず、入口スクリーンとしてのみ参照</strong>する。会った後の合否判定は、次章の10要素で行う。
+    </div>
+  </div>
+</section>
+
+<!-- 10 HYPOTHESES -->
+<section id="hypotheses">
+  <div class="container">
+    <div class="section-label"><span class="num">06</span>会って滲み出る10の要素</div>
+    <h2>ターゲットの可能性が高い学生<br>に滲み出ている、10の実体。</h2>
+    <p class="section-lead">7ラベルで"会うに値する"と判断した学生を、実際に面談した時に <strong>その学生にしか出てこない滲み出た実力</strong> として現れる10の要素。思考の癖・こだわり・行動の質と量・他では見えない実体 ― これらが複数同時に観測される学生を次世代リーダー候補と判定する。</p>
+
+    <!-- FUNNEL: 全体の流れ -->
+    <h3 class="mt-32">判定の全体フロー</h3>
+    <p>紙面（7ラベル確率論）で絞り込み、面談（10要素）で確定させる。</p>
+    <div class="funnel">
+      <div class="funnel-stage s1 reveal">
+        <div>
+          <div class="funnel-label">全学生母集団</div>
+          <div class="funnel-sub">エージェント登録 / 自社エントリー</div>
+        </div>
+        <div class="funnel-num">1,000名〜</div>
+      </div>
+      <div class="funnel-arrow">▼</div>
+      <div class="funnel-stage s2 reveal delay-1">
+        <div>
+          <div class="funnel-label">紙面スクリーニング ― 7ラベル</div>
+          <div class="funnel-sub">3つ以上該当する学生に絞る（確率論）</div>
+        </div>
+        <div class="funnel-num">約200名</div>
+      </div>
+      <div class="funnel-arrow">▼</div>
+      <div class="funnel-stage s3 reveal delay-2">
+        <div>
+          <div class="funnel-label">カジュアル面談 ― 中身設計</div>
+          <div class="funnel-sub">②選択層・③こだわり層を相互開示</div>
+        </div>
+        <div class="funnel-num">約60名</div>
+      </div>
+      <div class="funnel-arrow">▼</div>
+      <div class="funnel-stage s4 reveal delay-3">
+        <div>
+          <div class="funnel-label">10要素 ― 5つ以上観測</div>
+          <div class="funnel-sub">思考の癖 / こだわり / 行動 / 滲み出た実力</div>
+        </div>
+        <div class="funnel-num">約15名</div>
+      </div>
+      <div class="funnel-arrow">▼</div>
+      <div class="funnel-stage s5 reveal delay-4">
+        <div>
+          <div class="funnel-label">次世代リーダー候補</div>
+          <div class="funnel-sub">選考→内定</div>
+        </div>
+        <div class="funnel-num">3–5名</div>
+      </div>
+    </div>
+    <p class="sub" style="text-align:center;">※ 数値は例示。実運用では案件ごとに再推計する。</p>
+
+    <!-- 10 ELEMENTS as WHEEL (4 categories) -->
+    <h3 class="mt-48">10要素 ― 4カテゴリで整理</h3>
+    <p>10の要素は <strong>思考の癖・こだわり・行動の質と量・滲み出た実力</strong> の4つに分類される。それぞれ独立した観察ポイントになるため、面談の設問設計も4カテゴリごとに仕込む。</p>
+
+    <div class="wheel">
+      <div class="wheel-cat kuse reveal">
+        <div class="wc-kicker">思考の癖</div>
+        <h5>問いを掘る・往復させる</h5>
+        <ul>
+          <li><span class="wn">1</span>Why深掘りが自発的に出る</li>
+          <li><span class="wn">7</span>抽象と具体を自在に行き来する</li>
+        </ul>
+      </div>
+      <div class="wheel-cat kodawari reveal delay-1">
+        <div class="wc-kicker">こだわり</div>
+        <h5>細部に手を入れる・所有する</h5>
+        <ul>
+          <li><span class="wn">2</span>他人が気にしない精度に時間を使う</li>
+          <li><span class="wn">8</span>自分の選択を所有格で語る</li>
+        </ul>
+      </div>
+      <div class="wheel-cat koudou reveal delay-2">
+        <div class="wc-kicker">行動の質・量</div>
+        <h5>問い直す・同時に回す・適応する</h5>
+        <ul>
+          <li><span class="wn">3</span>受けた問いを自分の問いに再定義する</li>
+          <li><span class="wn">4</span>複数領域を同時に動かしている</li>
+          <li><span class="wn">10</span>聞き手に合わせて言い換える</li>
+        </ul>
+      </div>
+      <div class="wheel-cat jitsuryoku reveal delay-3">
+        <div class="wc-kicker">滲み出た実力</div>
+        <h5>演じられない地金</h5>
+        <ul>
+          <li><span class="wn">5</span>失敗の話で自然に構造が現れる</li>
+          <li><span class="wn">6</span>他者への敬意が言葉の端々に出る</li>
+          <li><span class="wn">9</span>メタで自分を語れる余裕がある</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="mt-48">10要素の詳細</h3>
+
+    <div class="label-list">
+      <div class="label-item">
+        <div class="label-num">1</div>
+        <div>
+          <div class="label-title">思考の癖 ― Why深掘りが自発的に出る</div>
+          <div class="label-body">質問に答える前に「なぜその問いか」を確認する。なぜを3回重ねても答えが枯れず、逆に新しい問いが生まれる。思考の深さが面談の途中で加速する学生。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">2</div>
+        <div>
+          <div class="label-title">こだわり ― 他人が気にしない精度に時間を使う</div>
+          <div class="label-body">任された領域で、他者からは見えない細部のクオリティに手を入れる。ESの表現の整い具合、提出物の日付統一、前提条件の確認など "神は細部" を地で行く。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">3</div>
+        <div>
+          <div class="label-title">行動の質 ― 受けた問いを自分の問いに再定義する</div>
+          <div class="label-body">依頼されたタスクを「本当の目的は何か」に置き換え、解く前に構造から整える。「言われたことをやる」ではなく「何をすべきかを決める」から始める。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">4</div>
+        <div>
+          <div class="label-title">行動の量 ― 複数領域を同時に動かしている</div>
+          <div class="label-body">部活・アルバイト・学業・資格・長期プロジェクト等、週次で複数軸を回している。一点集中ではなくキャパシティと優先順位設計ができる学生。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">5</div>
+        <div>
+          <div class="label-title">滲み出た実力 ― 失敗の話で自然に構造が現れる</div>
+          <div class="label-body">「失敗経験は？」と聞いた瞬間、原因・対応・学びが整理されて出てくる。準備された回答ではなく、日常的に自分の経験を構造化している痕跡。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">6</div>
+        <div>
+          <div class="label-title">滲み出た実力 ― 他者への敬意が言葉の端々に出る</div>
+          <div class="label-body">巻き込んだ相手を「助けてもらった」「〇〇さんが頑張ってくれた」と語る。功績の所在を正確に分解し、自分の手柄にしない。チームで動ける人間の地金。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">7</div>
+        <div>
+          <div class="label-title">思考の癖 ― 抽象と具体を自在に行き来する</div>
+          <div class="label-body">「つまり〜」「例えば〜」が自然に入る。話が抽象語で終わらず必ず具体例に落ち、具体で終わらず抽象化し直す。教える力・伝える力の根幹。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">8</div>
+        <div>
+          <div class="label-title">こだわり ― 自分の選択を所有格で語る</div>
+          <div class="label-body">大学・サークル・バイトを「入ったら〜だった」ではなく「選んだ理由は〜／選んだ結果〜だった」で語る。環境に巻き込まれるのではなく、<em>自分で選んで立っている</em> 感覚を持つ学生。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">9</div>
+        <div>
+          <div class="label-title">滲み出た実力 ― メタで自分を語れる余裕がある</div>
+          <div class="label-body">「今の就活、自分ではこう見えています」「今話した内容、抽象的になりすぎましたね」など自己俯瞰の言葉が面談中に自然に出る。目的は嘘をつけるが、メタ認知は嘘がつけない。</div>
+        </div>
+      </div>
+      <div class="label-item">
+        <div class="label-num">10</div>
+        <div>
+          <div class="label-title">行動の質 ― 聞き手に合わせて言い換える</div>
+          <div class="label-body">面接官がどんな反応をしたかを見て、同じ内容を言い換え直す。一方通行ではなく対話になる。現場で顧客・同僚の理解度を読みながら動ける人材の基盤。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout dark mt-48">
+      10要素は、会話の中で <em>意識的に演じられるもの</em> ではない。日常の思考習慣から滲み出るものなので、準備された回答ではなく、<strong>脱線時・想定外の問い・メタ的な質問への反応</strong> で現れる。面談の後半、学生が慣れてきた時間帯こそ観察ポイント。10要素のうち <strong>5つ以上</strong> が複数エピソードで観測されれば、次世代リーダー候補として確度が高い。
+    </div>
+
+    <table class="matrix" style="margin-top: 48px;">
+      <thead>
+        <tr>
+          <th style="width: 30%;">3名の実例で照らすと</th>
+          <th>顕著に観測された要素</th>
+          <th>相対的に弱かった／見えなかった要素</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">中津さん（コア型）</td>
+          <td>#5 失敗の構造化 ／ #6 他者への敬意 ／ #8 所有格で語る選択 ／ #9 メタ認知</td>
+          <td>#10 聞き手適応は想定。#2 細部のこだわりは未観測。</td>
+        </tr>
+        <tr>
+          <td class="row-head">中倉さん（戦略支援型）</td>
+          <td>#1 Why深掘り ／ #3 問いの再定義 ／ #5 失敗構造化 ／ #7 抽象と具体の往復</td>
+          <td>#4 行動量（インターン未経験・就活出遅れ）は弱いが、#1#3#7の強さが補完。</td>
+        </tr>
+        <tr>
+          <td class="row-head">大倉さん（実行ポテンシャル型）</td>
+          <td>#2 細部のこだわり ／ #3 問いの再定義 ／ #4 行動量（3資格並行）／ #6 他者への敬意</td>
+          <td>#9 メタ認知・#10 聞き手適応は "堅実すぎ" で出きらず。そこを引き出せればコア昇格。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ACTION -->
+<section id="action" class="warm">
+  <div class="container">
+    <div class="section-label"><span class="num">07</span>次のアクション</div>
+    <h2>4月–5月で整える、<br>有効情報のパッケージ。</h2>
+    <p class="section-lead">本資料で提示した7ラベル・10仮説を、CAが現場で使える形に落とし込むためのアクションを提案する。林（カケハシスカイ）主導、田代様にはヒアリング・意思決定の時間をいただく。</p>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="t-meta">STEP 01 ／ 期限：5月上旬 ／ 担当：林＋田代様</div>
+        <h4>社員エピソード棚卸し</h4>
+        <div class="t-body">現場社員3–5名のインタビュー（なぜレオパレス／現場の"自分なり"／失敗の構造化）。田代様にご対象選定いただき、インタビュー設計は林がリード。</div>
+      </div>
+      <div class="timeline-item reveal delay-1">
+        <div class="t-meta">STEP 02 ／ 期限：5月中旬 ／ 担当：林</div>
+        <h4>CA向け 1枚サマリの作成</h4>
+        <div class="t-body">7ラベル＋10要素をCAが学生面談で即参照できるA4 1枚に凝縮。社員エピソードと紐づけて差別化する。</div>
+      </div>
+      <div class="timeline-item reveal delay-2">
+        <div class="t-meta">STEP 03 ／ 期限：5月中旬 ／ 担当：林＋岩崎</div>
+        <h4>カジュアル面談フローの設計</h4>
+        <div class="t-body">4/15議論の宿題。面談の目的を「事実交換」ではなく <strong>"②③層の相互開示"</strong> と定義し、10要素を引き出す設問セットを設計。</div>
+      </div>
+      <div class="timeline-item reveal delay-3">
+        <div class="t-meta">STEP 04 ／ 期限：5月下旬〜6月 ／ 担当：林＋田代様</div>
+        <h4>主要エージェントへの共有会</h4>
+        <div class="t-body">キャリアスタート／Stellapoint／HR TEAM／REFLAME等へ7ラベル・10要素を共有。CAの反応を吸い上げて初版を調整し、四半期で棚卸す運用を始動。</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>田代様へのご提案</h3>
+    <p class="large">
+      次世代リーダー層のターゲット解像度を上げる前に、<strong>CAに渡す"レオパレスの有効情報"の定義</strong> を先にやらせてください。これが整わないと、母集団を増やしても有効率が上がらず、工数負けします。社員3–5名のインタビュー素材をいただければ、A–D（※）の型に落とし込めます。
+    </p>
+    <p class="sub">※ A: 社員の選択エピソード／B: 現場の"自分なり"発揮／C: 次世代若手の現在地モデル／D: 優秀学生3名の型化</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <h3>References & Sources</h3>
+    <p style="margin-top: 20px;">本資料の公開情報パートは以下を参照。</p>
+    <ul style="padding-left: 20px; margin-top: 16px; line-height: 1.9; font-size: 14px;">
+      <li>リクルートワークス研究所「大卒求人倍率調査（2026年卒）」2025年4月</li>
+      <li>日本経済新聞「26年大卒求人倍率1.66倍、4年ぶり低下も採用意欲高く」2025年4月</li>
+      <li>マイナビキャリアリサーチLab「2026年卒新卒採用・就職活動の展望」2025年3月</li>
+      <li>Meets Company「新卒の就活エージェント利用率」2024年</li>
+      <li>digireka!HR「新卒人材紹介サービス料金相場」2025年</li>
+      <li>人材マガジン「人材紹介 市場規模 2025年予測」2025年</li>
+      <li>Business Research Insights「Recruiting Job Placement Market 2026」</li>
+    </ul>
+
+    <h3 style="margin-top: 40px;">Internal references</h3>
+    <ul style="padding-left: 20px; margin-top: 16px; line-height: 1.9; font-size: 14px;">
+      <li>2026/04/15 28卒次世代リーダー層 エージェント戦略ディスカッション議事録</li>
+      <li>次世代ターゲット層の生情報（大倉さん／中津さん／中倉さん）</li>
+      <li>新卒人材要件及びペルソナ設計について（2025/08/21 版）</li>
+      <li>株式会社レオパレス21様 25年3月統合レポート</li>
+      <li>エージェント様向け ご説明資料（2026/03/25 版）</li>
+    </ul>
+
+    <div class="foot-meta">
+      © 2026 Kakehashi Sky × Leopalace21 &nbsp;•&nbsp; 作成：林 圭祐 &nbsp;•&nbsp; 2026.04.16
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Auto-apply reveal class to all section content blocks that don't have it
+  document.querySelectorAll('section h2, section h3, .section-lead, .callout, .matrix, blockquote, .visibility, .equation, .eq-block').forEach(el=>{
+    if(!el.classList.contains('reveal')) el.classList.add('reveal');
+  });
+
+  // IntersectionObserver for reveal animation
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        // counter trigger
+        const counters = entry.target.querySelectorAll('.counter[data-target]');
+        counters.forEach(c=>{ if(!c.dataset.done) animateCounter(c); });
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+  // Number counter
+  function animateCounter(el){
+    const target = parseFloat(el.dataset.target);
+    if(isNaN(target)){
+      el.textContent = el.dataset.target;
+      el.dataset.done = '1';
+      return;
+    }
+    const decimals = parseInt(el.dataset.decimals || '0', 10);
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now){
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = target * eased;
+      el.textContent = decimals ? v.toFixed(decimals) : Math.round(v).toString();
+      if(t < 1) requestAnimationFrame(tick);
+      else { el.textContent = decimals ? target.toFixed(decimals) : target.toString(); el.dataset.done = '1'; }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // Ratio bar fill animation on view
+  document.querySelectorAll('.ratio-bar').forEach(bar=>{
+    const paper = bar.querySelector('.paper');
+    const meet = bar.querySelector('.meet');
+    if(!paper || !meet) return;
+    const pw = paper.style.width, mw = meet.style.width;
+    paper.style.width = '0%'; meet.style.width = '0%';
+    const ro = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          paper.style.transition = 'width 1.1s cubic-bezier(.2,.8,.2,1)';
+          meet.style.transition  = 'width 1.1s cubic-bezier(.2,.8,.2,1) .15s';
+          paper.style.width = pw;
+          meet.style.width  = mw;
+          ro.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    ro.observe(bar);
+  });
+
+  // Funnel stage sequential pop-in
+  document.querySelectorAll('.funnel-stage').forEach((stage, i)=>{
+    stage.style.opacity = '0';
+    stage.style.transform = 'translateY(14px) scale(0.98)';
+    stage.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(.2,.8,.2,1)';
+  });
+  const funnelObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const stages = entry.target.querySelectorAll('.funnel-stage');
+        stages.forEach((s, i)=>{
+          setTimeout(()=>{
+            s.style.opacity = '1';
+            s.style.transform = 'translateY(0) scale(1)';
+          }, i * 160);
+        });
+        funnelObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.funnel').forEach(f => funnelObs.observe(f));
+
+  // Scroll progress bar
+  const sp = document.getElementById('scrollProgress');
+  if(sp){
+    window.addEventListener('scroll', ()=>{
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop / max * 100) : 0;
+      sp.style.width = pct + '%';
+    }, { passive: true });
+  }
+
+  // Smooth scroll for TOC
+  document.querySelectorAll('.toc a[href^="#"]').forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const tgt = document.querySelector(link.getAttribute('href'));
+      if(tgt) tgt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
